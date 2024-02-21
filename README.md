@@ -1,3 +1,17 @@
+# How to Use
+
+## Installation
+
+### `npm install`
+
+## How to run
+
+### `npm run electron:serve`
+
+## How to Build Setup exe
+
+### `npm run electron:build`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

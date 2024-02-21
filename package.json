@@ -1,6 +1,6 @@
 {
-  "name": "admin-reactelectron",
-  "version": "0.1.0",
+  "name": "admin-penerbitan",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@electron/remote": "^2.1.2",

@@ -86,19 +86,23 @@ function App() {
           headers: {
             Authorization:
               "Bearer SEBUHAIUSDHAUISBFEBGENRERIBWOKT134G9349G3094B0935NBOI4NB0934N0934NB903J4B0935JB093N4B93N4B093HJB93H4GINO",
+            "Content-Type": "application/json",
           },
-          body: {
+          body: JSON.stringify({
             jadwal_id: jadwalPenerbitan,
-          },
+          }),
         }
       );
 
       const data = await response.json();
+      // console.log(jadwalPenerbitan);
       if (data.status === "error") {
         setLogPenerbitan(
           "penerbitan sertifikat error. message: " + data.message
         );
+        console.log(data);
       }
+      setLogPenerbitan("penerbitan sertifikat berhasil");
     } catch (err) {
       setLogPenerbitan("penerbitan sertifikat error");
       console.error(err);
@@ -113,10 +117,11 @@ function App() {
           headers: {
             Authorization:
               "Bearer SEBUHAIUSDHAUISBFEBGENRERIBWOKT134G9349G3094B0935NBOI4NB0934N0934NB903J4B0935JB093N4B93N4B093HJB93H4GINO",
+            "Content-Type": "application/json",
           },
-          body: {
+          body: JSON.stringify({
             jadwal_id: jadwalPenerbitan,
-          },
+          }),
         }
       );
 
@@ -126,12 +131,13 @@ function App() {
         setLogPenerbitan(
           "penerbitan sertifikat error. message: " + data.message
         );
+        // console.log(data);
       }
+      setLogPenerbitan("penerbitan sertifikat dan cetak jadwal berhasil");
     } catch (err) {
       setLogPenerbitan("cetak jadwal error");
       console.error(err);
     }
-
     setLoading(false);
   };
 
@@ -214,7 +220,7 @@ function App() {
               value={jadwalPenerbitan}
             />
             <button onClick={handlePenerbitanJadwal}>Terbitkan Jadwal</button>
-            {logPenerbitan && <p style={{ color: "red" }}>{logPenerbitan}</p>}
+            {logPenerbitan && <p>{logPenerbitan}</p>}
           </div>
         </div>
 
