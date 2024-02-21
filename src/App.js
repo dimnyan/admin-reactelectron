@@ -5,11 +5,13 @@ import { useState } from "react";
 function App() {
   const [statusToken, setStatusToken] = useState("");
   const [idJadwal, setIdJadwal] = useState("");
+  const [jadwalPenerbitan, setJadwalPenerbitan] = useState(null);
   const [bnspToken, setBnspToken] = useState(null);
   const [statusJadwal, setStatusJadwal] = useState(null);
   const [jadwals, setJadwals] = useState([]);
   const [jadwalInfo, setJadwalInfo] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [logPenerbitan, setLogPenerbitan] = useState(false);
 
   // const bnspAuth = useRef("");
 
@@ -72,13 +74,75 @@ function App() {
     setLoading(false);
   };
 
+  const handlePenerbitanJadwal = async () => {
+    setLoading(true);
+
+    // Penerbitan Sertifikat
+    try {
+      const response = await fetch(
+        "https://reguler.lspgatensi.id/api/uji/penerbitan-sertifikat",
+        {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Bearer SEBUHAIUSDHAUISBFEBGENRERIBWOKT134G9349G3094B0935NBOI4NB0934N0934NB903J4B0935JB093N4B93N4B093HJB93H4GINO",
+          },
+          body: {
+            jadwal_id: jadwalPenerbitan,
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (data.status === "error") {
+        setLogPenerbitan(
+          "penerbitan sertifikat error. message: " + data.message
+        );
+      }
+    } catch (err) {
+      setLogPenerbitan("penerbitan sertifikat error");
+      console.error(err);
+    }
+
+    // CETAK JADWAL
+    try {
+      const response = await fetch(
+        "https://reguler.lspgatensi.id/api/uji/cetak-jadwal",
+        {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Bearer SEBUHAIUSDHAUISBFEBGENRERIBWOKT134G9349G3094B0935NBOI4NB0934N0934NB903J4B0935JB093N4B93N4B093HJB93H4GINO",
+          },
+          body: {
+            jadwal_id: jadwalPenerbitan,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === "error") {
+        setLogPenerbitan(
+          "penerbitan sertifikat error. message: " + data.message
+        );
+      }
+    } catch (err) {
+      setLogPenerbitan("cetak jadwal error");
+      console.error(err);
+    }
+
+    setLoading(false);
+  };
+
   // console.log(statusJadwal);
 
   return (
-    <>
+    <div style={{ padding: "10px" }}>
       {loading && (
         <h3 style={{ color: "red", textAlign: "center" }}>LOADING</h3>
       )}
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
           <div>
@@ -119,6 +183,7 @@ function App() {
             <input
               type="text"
               onChange={(e) => setIdJadwal(e.target.value)}
+              value={idJadwal}
             ></input>
             <button onClick={handleGetJadwal}>Get Jadwal</button>
             <div style={{ paddingLeft: "10px" }}>
@@ -140,6 +205,17 @@ function App() {
               )}
             </div>
           </div>
+          <div>
+            <br />
+            <h1>Penerbitan Blanko</h1>
+            <input
+              type="text"
+              onChange={(e) => setJadwalPenerbitan(e.target.value)}
+              value={jadwalPenerbitan}
+            />
+            <button onClick={handlePenerbitanJadwal}>Terbitkan Jadwal</button>
+            {logPenerbitan && <p style={{ color: "red" }}>{logPenerbitan}</p>}
+          </div>
         </div>
 
         <div style={{ paddingRight: "50px" }}>
@@ -150,7 +226,7 @@ function App() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
