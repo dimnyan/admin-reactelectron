@@ -7,6 +7,7 @@ function App() {
   const [idJadwal, setIdJadwal] = useState("");
   const [jadwalPenerbitan, setJadwalPenerbitan] = useState(null);
   const [bnspToken, setBnspToken] = useState(null);
+  const [jumlahjadwal, setJumlahjadwal] = useState(null);
   const [statusJadwal, setStatusJadwal] = useState(null);
   const [jadwals, setJadwals] = useState([]);
   const [jadwalInfo, setJadwalInfo] = useState(null);
@@ -45,11 +46,12 @@ function App() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://konstruksi.bnsp.go.id/api/v1/jadwal?limit=10&status_blanko=${statusJadwal}`,
+        `https://konstruksi.bnsp.go.id/api/v1/jadwal?limit=40&status_blanko=${statusJadwal}`,
         { headers: { "x-authorization": bnspToken } }
       );
 
       const data = await response.json();
+      setJumlahjadwal(data.meta.total);
       const jadwalArray = data.data.map((item) => item.id);
       setJadwals(jadwalArray);
     } catch (err) {
@@ -160,6 +162,7 @@ function App() {
             >
               <option value=""></option>
               <option value="2">Sedang Pengajuan</option>
+              <option value="4">Sedang Diverifikasi</option>
               <option value="22">Blanko Dikirim</option>
               <option value="23">Blanko Dikirim 2</option>
             </select>
@@ -168,7 +171,7 @@ function App() {
               {jadwals.length > 0 && (
                 <>
                   <p>
-                    Jml Jadwal : <b>{jadwals && jadwals.length}</b>
+                    Jml Jadwal : <b>{jumlahjadwal && jumlahjadwal}</b>
                   </p>
                   <p>ID Jadwal :</p>
                   <b>
